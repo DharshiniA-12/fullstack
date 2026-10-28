@@ -1,0 +1,140 @@
+﻿name: Deploy EX3 EX4 EX5 Frontends
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            ex3/frontend/package-lock.json
+            ex5/client/package-lock.json
+
+      - name: Build EX3 frontend
+        working-directory: ex3/frontend
+        run: |
+          npm ci
+          npm run build -- --base=/fullstack/ex3/
+
+      - name: Build EX5 frontend
+        working-directory: ex5/client
+        run: |
+          npm ci
+          npm run build -- --base=/fullstack/ex5/
+
+      - name: Prepare website files
+        run: |
+          mkdir -p _site/ex3 _site/ex4 _site/ex5
+          cp -R ex3/frontend/dist/. _site/ex3/
+          cp -R ex4/public/. _site/ex4/
+          cp -R ex5/client/dist/. _site/ex5/
+
+          cat > _site/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Full Stack Web Development Lab</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                background: #f4f7fb;
+                color: #202b3c;
+                max-width: 900px;
+                margin: 50px auto;
+                padding: 20px;
+              }
+              .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 18px;
+                margin-top: 30px;
+              }
+              a {
+                display: block;
+                padding: 24px;
+                background: white;
+                border: 1px solid #dfe5ee;
+                border-radius: 14px;
+                color: #174ea6;
+                text-decoration: none;
+              }
+              a:hover {
+                border-color: #174ea6;
+              }
+              p {
+                line-height: 1.6;
+              }
+            </style>
+          </head>
+          <body>
+            <h1>Full Stack Web Development Lab</h1>
+            <p>Choose an experiment to view its frontend.</p>
+            <div class="grid">
+              <a href="./ex3/">
+                <h2>EX3</h2>
+                <p>Leave Management System</p>
+                Open website
+              </a>
+              <a href="./ex4/">
+                <h2>EX4</h2>
+                <p>Project Management Dashboard</p>
+                Open website
+              </a>
+              <a href="./ex5/">
+                <h2>EX5</h2>
+                <p>Online Survey Application</p>
+                Open website
+              </a>
+            </div>
+            <p>Frontend demonstrations for laboratory experiments.</p>
+          </body>
+          </html>
+          EOF
+
+          touch _site/.nojekyll
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
