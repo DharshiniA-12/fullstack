@@ -6,7 +6,7 @@ import {
   ClipboardCheck, Users, MessageSquareText, CircleCheck, CircleX
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://leave-management-api-hvmk.onrender.com/api';
 const TOKEN_KEY = 'leave-management-token';
 const DAY_MS = 24 * 60 * 60 * 1000;
 
