@@ -1,5 +1,4 @@
-﻿
-name: Deploy EX3 EX4 EX5 Frontends
+name: Deploy All Frontends
 
 on:
   push:
@@ -35,11 +34,12 @@ jobs:
 
       - name: Prepare website
         run: |
-          mkdir -p _site/ex3 _site/ex4 _site/ex5
+          mkdir -p _site/ex1a _site/ex3 _site/ex4 _site/ex5
+          cp -R ex1a/. _site/ex1a/
           cp -R ex3/frontend/dist/. _site/ex3/
           cp -R ex4/public/. _site/ex4/
           cp -R ex5/client/dist/. _site/ex5/
-          printf '<h1>Full Stack Web Development Lab</h1><p><a href="./ex3/">EX3 - Leave Management</a></p><p><a href="./ex4/">EX4 - Project Management</a></p><p><a href="./ex5/">EX5 - Online Survey</a></p>' > _site/index.html
+          printf '<h1>Full Stack Web Development Lab</h1><p><a href="./ex1a/ex1a.html">EX1A - Portfolio</a></p><p><a href="./ex3/">EX3 - Leave Management</a></p><p><a href="./ex4/">EX4 - Project Management</a></p><p><a href="./ex5/">EX5 - Online Survey</a></p>' > _site/index.html
           touch _site/.nojekyll
 
       - name: Configure Pages
