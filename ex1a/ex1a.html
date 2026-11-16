@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharshini A | Portfolio</title>
+
+    <style>
+        /* Reset and general styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f5;
+            color: #292932;
+            line-height: 1.6;
+        }
+
+        .portfolio {
+            max-width: 1200px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 34% 66%;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        /* LEFT SIDEBAR */
+        .sidebar {
+            background-color: #25252d;
+            color: white;
+            padding: 35px 28px;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .profile img {
+            width: 135px;
+            height: 135px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #b8bbff;
+            margin-bottom: 15px;
+        }
+
+        .profile h1 {
+            font-size: 27px;
+            line-height: 1.3;
+        }
+
+        .profile p {
+            color: #c8c8d6;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .side-section {
+            margin-bottom: 30px;
+        }
+
+        .side-section h2 {
+            color: #b8bbff;
+            font-size: 17px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #555560;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-section p,
+        .side-section li {
+            color: #e0e0e7;
+            font-size: 13px;
+        }
+
+        .education-item {
+            border-left: 3px solid #b8bbff;
+            padding-left: 12px;
+            margin-bottom: 20px;
+        }
+
+        .education-item h3 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .education-item p {
+            margin-bottom: 4px;
+        }
+
+        .skill-group {
+            margin-bottom: 18px;
+        }
+
+        .skill-group h3 {
+            color: #c7c7d5;
+            font-size: 13px;
+            margin-bottom: 9px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .skill {
+            background: #393943;
+            border: 1px solid #555563;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        /* RIGHT CONTENT */
+        .main-content {
+            padding: 42px 38px;
+        }
+
+        .intro {
+            margin-bottom: 38px;
+        }
+
+        .eyebrow {
+            color: #777bd2;
+            font-weight: bold;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .intro h2 {
+            font-size: clamp(28px, 4vw, 43px);
+            line-height: 1.2;
+            margin-bottom: 18px;
+        }
+
+        .intro h2 span {
+            color: #777bd2;
+        }
+
+        .intro p {
+            font-size: 14px;
+            color: #666671;
+        }
+
+        .content-section {
+            margin-bottom: 32px;
+            scroll-margin-top: 20px;
+        }
+
+        .content-section > h2 {
+            font-size: 25px;
+            margin-bottom: 18px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eeeeF4;
+        }
+
+        .card {
+            padding: 20px;
+            background: #fafafd;
+            border: 1px solid #e8e8f0;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #777bd2;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #666671;
+            font-size: 13px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .tag {
+            background: #eeeeff;
+            color: #555bb3;
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .certificate {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 16px 8px;
+            border-bottom: 1px solid #eeeeF4;
+        }
+
+        .certificate-number {
+            color: #777bd2;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .certificate h3 {
+            font-size: 15px;
+        }
+
+        .certificate p {
+            color: #777;
+            font-size: 12px;
+        }
+
+        /* CONTACT */
+        .contact {
+            background: #292930;
+            color: white;
+            padding: 27px;
+            border-radius: 12px;
+            scroll-margin-top: 20px;
+        }
+
+        .contact h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .contact p {
+            color: #d3d3dd;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .contact a {
+            color: white;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        .contact a:hover {
+            color: #b8bbff;
+        }
+
+        .contact-button {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: #777bd2;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .contact-button:hover {
+            background: #6266bb;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 760px) {
+            .portfolio {
+                grid-template-columns: 1fr;
+                margin: 12px;
+            }
+
+            .sidebar {
+                padding: 30px 24px;
+            }
+
+            .main-content {
+                padding: 30px 22px;
+            }
+
+            .intro h2 {
+                font-size: 32px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .portfolio {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="portfolio">
+
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="profile">
+                <img src="profile.jpg"
+                     alt="Dharshini profile photo">
+
+                <h1>Dharshini A</h1>
+                <p>B.Tech IT Student</p>
+            </div>
+
+            <!-- CAREER OBJECTIVE -->
+            <section class="side-section">
+                <h2>Career Objective</h2>
+
+                <p>
+                    Aspiring software developer pursuing B.Tech in
+                    Information Technology. Interested in Java
+                    programming, web development, and UI/UX design.
+                    Eager to improve technical skills, solve problems,
+                    and contribute to real-world projects.
+                </p>
+            </section>
+
+            <!-- EDUCATION -->
+            <section class="side-section">
+                <h2>Education</h2>
+
+                <div class="education-item">
+                    <h3>B.Tech Information Technology</h3>
+
+                    <p>
+                        Velalar College of Engineering and Technology
+                    </p>
+
+                    <p>2024 – 2028</p>
+                    <p>Currently Pursuing</p>
+                </div>
+
+                <div class="education-item">
+                    <h3>Higher Secondary Education</h3>
+
+                    <p>Class XII</p>
+                    <p>2024</p>
+                    <p>Percentage: 65%</p>
+                </div>
+
+                <div class="education-item">
+                    <h3>Secondary School Education</h3>
+
+                    <p>Class X</p>
+                    <p>2022</p>
+                    <p>Percentage: 68%</p>
+                </div>
+            </section>
+
+            <!-- SKILLS -->
+            <section class="side-section">
+                <h2>Skills</h2>
+
+                <div class="skill-group">
+                    <h3>Programming</h3>
+
+                    <div class="skills">
+                        <span class="skill">Java</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h3>Web Development</h3>
+
+                    <div class="skills">
+                        <span class="skill">HTML</span>
+                        <span class="skill">CSS</span>
+                        <span class="skill">JavaScript</span>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h3>UI/UX Design</h3>
+
+                    <div class="skills">
+                        <span class="skill">Figma</span>
+                        <span class="skill">Wireframing</span>
+                        <span class="skill">Prototyping</span>
+                    </div>
+                </div>
+            </section>
+
+        </aside>
+
+        <!-- RIGHT MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- INTRODUCTION -->
+            <section class="intro">
+                <p class="eyebrow">WELCOME TO MY PORTFOLIO</p>
+
+                <h2>
+                    Building Ideas into
+                    <span>Digital Experiences.</span>
+                </h2>
+
+                <p>
+                    I am Dharshini, a B.Tech Information Technology
+                    student interested in software development,
+                    web technologies, and creative problem-solving.
+                    I enjoy learning new concepts and building
+                    practical projects.
+                </p>
+            </section>
+
+            <!-- INTERNSHIP -->
+            <section class="content-section">
+                <h2>Internship</h2>
+
+                <div class="card">
+                    <h3>Internship Experience</h3>
+
+                    <p class="subtitle">
+                        Add your internship details
+                    </p>
+
+                    <p>
+                        Internship details, organization name,
+                        duration, and work experience can be added
+                        here when available.
+                    </p>
+                </div>
+            </section>
+
+            <!-- PROJECTS -->
+            <section class="content-section" id="projects">
+                <h2>Projects</h2>
+
+                <div class="card">
+                    <h3>CineBox – Movie App Prototype</h3>
+
+                    <p class="subtitle">UI/UX Design | Figma</p>
+
+                    <p>
+                        A movie application prototype featuring
+                        Home, Search, Movie Details, Player,
+                        Watchlist, and Profile screens with
+                        interactive navigation.
+                    </p>
+
+                    <div class="tags">
+                        <span class="tag">Figma</span>
+                        <span class="tag">UI/UX</span>
+                        <span class="tag">Prototyping</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Full Stack Web Development Projects</h3>
+
+                    <p class="subtitle">HTML | CSS | JavaScript</p>
+
+                    <p>
+                        Practical web application projects including
+                        portfolio websites, leave management,
+                        shopping interfaces, and food ordering
+                        interfaces.
+                    </p>
+
+                    <div class="tags">
+                        <span class="tag">HTML</span>
+                        <span class="tag">CSS</span>
+                        <span class="tag">JavaScript</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>AquaSentinel – Water Monitoring System</h3>
+
+                    <p class="subtitle">Hackathon Project</p>
+
+                    <p>
+                        A real-time water monitoring project concept
+                        using sensors and a dashboard to monitor
+                        water quality parameters.
+                    </p>
+
+                    <div class="tags">
+                        <span class="tag">IoT</span>
+                        <span class="tag">Sensors</span>
+                        <span class="tag">Dashboard</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CERTIFICATES -->
+            <section class="content-section">
+                <h2>Certificates</h2>
+
+                <div class="certificate">
+                    <span class="certificate-number">01</span>
+
+                    <div>
+                        <h3>Certificate Name</h3>
+                        <p>Add your certification details</p>
+                    </div>
+                </div>
+
+                <div class="certificate">
+                    <span class="certificate-number">02</span>
+
+                    <div>
+                        <h3>Certificate Name</h3>
+                        <p>Add your certification details</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACT -->
+            <section class="contact" id="contact">
+                <h2>Let's Connect</h2>
+
+                <p>
+                    Interested in learning, collaboration,
+                    projects, and internship opportunities?
+                </p>
+
+                <p>
+                    Email:
+                    <a href="mailto:YOUR_EMAIL@example.com">
+                        YOUR_EMAIL@example.com
+                    </a>
+                </p>
+
+                <a class="contact-button"
+                   href="mailto:YOUR_EMAIL@example.com?subject=Portfolio%20Contact">
+                    Contact Me
+                </a>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        <p>
+            &copy; <span id="year"></span> Dharshini A.
+            All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        // Automatically display the current year
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+    </script>
+
+</body>
+</html>
