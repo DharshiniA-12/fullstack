@@ -6,7 +6,7 @@ Exercise 2a: https://dharshinia-12.github.io/fullstack/food-delivery/?utm_source
 
 Exercise 2b: https://dharshinia-12.github.io/fullstack/sell-buy/?utm_source=chatgpt.com
 
-Exercise 3: https://dharshinia-12.github.io/fullstack/ex3/?utm_source=chatgpt.com
+Exercise 3: https://leave-management-frontend-c4hf.onrender.com?utm_source=chatgpt.com
 
 Exercise 4: https://ex4-task-manager.onrender.com
 
