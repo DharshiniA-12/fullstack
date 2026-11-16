@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReUse Market</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f7f5;
+    color: #222;
+}
+
+header {
+    background: #176b55;
+    color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+header h1 {
+    font-size: 27px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 7px;
+    padding: 11px 15px;
+    font-weight: bold;
+}
+
+.primary {
+    background: #176b55;
+    color: white;
+}
+
+header button {
+    background: white;
+    color: #176b55;
+}
+
+.hero {
+    text-align: center;
+    background: #e1f1e7;
+    padding: 45px 15px;
+}
+
+.hero h2 {
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #53665c;
+    margin-bottom: 20px;
+}
+
+.search {
+    width: min(90%, 480px);
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px;
+}
+
+.section-title {
+    margin-bottom: 20px;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.category {
+    background: white;
+    border: 1px solid #ddd;
+}
+
+.category.active {
+    background: #176b55;
+    color: white;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e0e6e2;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px #0000000a;
+}
+
+.product-image {
+    height: 165px;
+    background: #e9f0eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 65px;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 16px;
+}
+
+.card-content h3 {
+    margin: 8px 0;
+}
+
+.description {
+    color: #66716b;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.price {
+    color: #176b55;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.card-content button {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.secondary {
+    background: #e8f2ec;
+    color: #176b55;
+}
+
+.form-section {
+    display: none;
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.form-section h2 {
+    margin-bottom: 18px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+form input, form select, form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccd5cf;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+form textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#status {
+    margin-top: 15px;
+    color: #176b55;
+    font-weight: bold;
+}
+
+footer {
+    background: #173c30;
+    color: white;
+    text-align: center;
+    padding: 22px;
+    margin-top: 35px;
+}
+
+@media (max-width: 550px) {
+    header {
+        padding: 17px;
+    }
+
+    .hero h2 {
+        font-size: 27px;
+    }
+
+    main {
+        padding: 24px 14px;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ReUse Market</h1>
+    <div>
+        <button onclick="showAll()">All Products</button>
+        <button onclick="showMyProducts()">My Listings</button>
+        <button onclick="showForm()">+ Sell Product</button>
+    </div>
+</header>
+
+<section class="hero">
+    <h2>Buy Smart. Sell Easily.</h2>
+    <p>Discover affordable second-hand products and give them a new life.</p>
+    <input
+        class="search"
+        id="search"
+        type="text"
+        placeholder="Search mobiles, laptops, books..."
+        oninput="renderProducts()"
+    >
+</section>
+
+<main>
+    <section class="form-section" id="formSection">
+        <h2>List Your Used Product</h2>
+
+        <form id="productForm">
+            <input id="name" placeholder="Product name" required>
+
+            <select id="category" required>
+                <option value="Mobiles">Mobiles</option>
+                <option value="Laptops">Laptops</option>
+                <option value="Books">Books</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Bicycles">Bicycles</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <input id="price" type="number" min="1"
+                placeholder="Price in ₹" required>
+
+            <select id="condition" required>
+                <option value="Like New">Like New</option>
+                <option value="Good">Good</option>
+                <option value="Fair">Fair</option>
+            </select>
+
+            <input id="location" placeholder="Your location" required>
+            <input id="seller" placeholder="Seller name" required>
+
+            <input id="contact" placeholder="Contact details (optional)">
+            <input id="image" type="url" placeholder="Image URL (optional)">
+
+            <textarea id="description" class="full"
+                placeholder="Product description" required></textarea>
+
+            <div class="form-buttons full">
+                <button type="submit" class="primary">Publish Product</button>
+                <button type="button" class="secondary"
+                    onclick="hideForm()">Cancel</button>
+            </div>
+        </form>
+
+        <p id="status"></p>
+    </section>
+
+    <h2 class="section-title" id="pageTitle">Available Products</h2>
+
+    <div class="categories">
+        <button class="category active" onclick="filterCategory('All', this)">All</button>
+        <button class="category" onclick="filterCategory('Mobiles', this)">Mobiles</button>
+        <button class="category" onclick="filterCategory('Laptops', this)">Laptops</button>
+        <button class="category" onclick="filterCategory('Books', this)">Books</button>
+        <button class="category" onclick="filterCategory('Furniture', this)">Furniture</button>
+        <button class="category" onclick="filterCategory('Bicycles', this)">Bicycles</button>
+        <button class="category" onclick="filterCategory('Other', this)">Other</button>
+    </div>
+
+    <div class="products" id="products"></div>
+</main>
+
+<footer>
+    <p>ReUse Market | Classifieds Web Application</p>
+    <p>Buy and sell used products easily.</p>
+</footer>
+
+<script>
+const defaultProducts = [
+    {
+        id: 1,
+        name: "Samsung Smartphone",
+        category: "Mobiles",
+        price: 8500,
+        condition: "Good",
+        location: "Salem",
+        seller: "Arun",
+        contact: "",
+        description: "Used smartphone in good working condition.",
+        image: "",
+        emoji: "📱"
+    },
+    {
+        id: 2,
+        name: "Student Laptop",
+        category: "Laptops",
+        price: 18000,
+        condition: "Good",
+        location: "Erode",
+        seller: "Kavin",
+        contact: "",
+        description: "Laptop suitable for students and online classes.",
+        image: "",
+        emoji: "💻"
+    },
+    {
+        id: 3,
+        name: "Engineering Books",
+        category: "Books",
+        price: 600,
+        condition: "Good",
+        location: "Salem",
+        seller: "Priya",
+        contact: "",
+        description: "Used engineering textbooks in readable condition.",
+        image: "",
+        emoji: "📚"
+    },
+    {
+        id: 4,
+        name: "Wooden Study Table",
+        category: "Furniture",
+        price: 2200,
+        condition: "Fair",
+        location: "Coimbatore",
+        seller: "Mohan",
+        contact: "",
+        description: "Second-hand study table with minor scratches.",
+        image: "",
+        emoji: "🪑"
+    },
+    {
+        id: 5,
+        name: "City Bicycle",
+        category: "Bicycles",
+        price: 3000,
+        condition: "Good",
+        location: "Erode",
+        seller: "Nila",
+        contact: "",
+        description: "Used bicycle for everyday travel.",
+        image: "",
+        emoji: "🚲"
+    },
+    {
+        id: 6,
+        name: "Wireless Headphones",
+        category: "Other",
+        price: 900,
+        condition: "Like New",
+        location: "Chennai",
+        seller: "Divya",
+        contact: "",
+        description: "Lightly used wireless headphones.",
+        image: "",
+        emoji: "🎧"
+    }
+];
+
+function loadProducts() {
+    try {
+        const saved = localStorage.getItem("reuseProducts");
+        return saved ? JSON.parse(saved) : defaultProducts;
+    } catch (error) {
+        return defaultProducts;
+    }
+}
+
+let products = loadProducts();
+let selectedCategory = "All";
+let myOnly = false;
+
+function saveProducts() {
+    localStorage.setItem("reuseProducts", JSON.stringify(products));
+}
+
+function safeText(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
+
+function renderProducts() {
+    const searchValue = document.getElementById("search")
+        .value.toLowerCase().trim();
+
+    const filtered = products.filter(product => {
+        const matchesCategory =
+            selectedCategory === "All" ||
+            product.category === selectedCategory;
+
+        const searchableText =
+            (product.name + " " + product.category + " " +
+             product.location + " " + product.description).toLowerCase();
+
+        return matchesCategory &&
+            searchableText.includes(searchValue) &&
+            (!myOnly || product.isMine);
+    });
+
+    const container = document.getElementById("products");
+
+    if (filtered.length === 0) {
+        container.innerHTML =
+            "<p>No products found. Try another search or add a listing.</p>";
+        return;
+    }
+
+    container.innerHTML = filtered.map(product => {
+        const picture = product.image
+            ? `<img src="${safeText(product.image)}" alt="${safeText(product.name)}"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+               <span style="display:none">${product.emoji || "📦"}</span>`
+            : `<span>${product.emoji || "📦"}</span>`;
+
+        return `
+            <div class="card">
+                <div class="product-image">${picture}</div>
+
+                <div class="card-content">
+                    <p class="description">
+                        ${safeText(product.category)} · ${safeText(product.condition)}
+                    </p>
+
+                    <h3>${safeText(product.name)}</h3>
+
+                    <div class="price">
+                        ₹${Number(product.price).toLocaleString("en-IN")}
+                    </div>
+
+                    <p class="description">
+                        ${safeText(product.description)}
+                    </p>
+
+                    <p class="description">
+                        Location: ${safeText(product.location)}
+                    </p>
+
+                    <button class="primary"
+                        onclick="viewProduct(${product.id})">
+                        View Details
+                    </button>
+
+                    ${product.isMine ? `
+                        <button class="secondary"
+                            onclick="deleteProduct(${product.id})">
+                            Delete Listing
+                        </button>` : ""}
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function filterCategory(category, button) {
+    selectedCategory = category;
+    myOnly = false;
+
+    document.querySelectorAll(".category").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    document.getElementById("pageTitle").textContent = "Available Products";
+    renderProducts();
+}
+
+function showForm() {
+    document.getElementById("formSection").style.display = "block";
+    document.getElementById("status").textContent = "";
+    document.getElementById("formSection").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+function hideForm() {
+    document.getElementById("formSection").style.display = "none";
+}
+
+document.getElementById("productForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const product = {
+        id: Date.now(),
+        name: document.getElementById("name").value.trim(),
+        category: document.getElementById("category").value,
+        price: Number(document.getElementById("price").value),
+        condition: document.getElementById("condition").value,
+        location: document.getElementById("location").value.trim(),
+        seller: document.getElementById("seller").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        image: document.getElementById("image").value.trim(),
+        isMine: true,
+        emoji: "📦"
+    };
+
+    if (!product.name || !product.location ||
+        !product.seller || !product.description || product.price <= 0) {
+        alert("Please enter valid product details.");
+        return;
+    }
+
+    products.unshift(product);
+    saveProducts();
+
+    selectedCategory = "All";
+    myOnly = false;
+    document.getElementById("search").value = "";
+    document.getElementById("pageTitle").textContent = "Available Products";
+
+    document.querySelectorAll(".category").forEach(button => {
+        button.classList.toggle(button.textContent.trim() === "All" ? "active" : "unused", false);
+    });
+    document.querySelectorAll(".category").forEach(button => {
+        if (button.textContent.trim() === "All") button.classList.add("active");
+        else button.classList.remove("active");
+    });
+
+    renderProducts();
+    this.reset();
+
+    document.getElementById("status").textContent =
+        "Product listed successfully!";
+
+    hideForm();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+function viewProduct(id) {
+    const product = products.find(item => item.id === id);
+    if (!product) return;
+
+    const contact = product.contact
+        ? "\nSeller contact: " + product.contact
+        : "\nNo contact details provided.";
+
+    alert(
+        "PRODUCT DETAILS\n\n" +
+        "Name: " + product.name + "\n" +
+        "Category: " + product.category + "\n" +
+        "Price: ₹" + product.price + "\n" +
+        "Condition: " + product.condition + "\n" +
+        "Location: " + product.location + "\n" +
+        "Seller: " + product.seller + "\n" +
+        "Description: " + product.description +
+        contact +
+        "\n\nDemo project: no real purchase or payment is processed."
+    );
+}
+
+function deleteProduct(id) {
+    const product = products.find(item => item.id === id);
+
+    if (!product || !product.isMine) return;
+
+    if (confirm("Do you want to delete this listing?")) {
+        products = products.filter(item => item.id !== id);
+        saveProducts();
+        renderProducts();
+    }
+}
+
+function showMyProducts() {
+    myOnly = true;
+    selectedCategory = "All";
+    document.getElementById("pageTitle").textContent = "My Listings";
+
+    document.querySelectorAll(".category").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.textContent.trim() === "All"
+        );
+    });
+
+    renderProducts();
+}
+
+function showAll() {
+    myOnly = false;
+    selectedCategory = "All";
+    document.getElementById("pageTitle").textContent = "Available Products";
+
+    document.querySelectorAll(".category").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.textContent.trim() === "All"
+        );
+    });
+
+    renderProducts();
+}
+
+renderProducts();
+</script>
+
+</body>
+</html>
