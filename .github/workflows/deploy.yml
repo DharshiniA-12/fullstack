@@ -1,0 +1,65 @@
+﻿
+name: Deploy EX3 EX4 EX5 Frontends
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build EX3
+        working-directory: ex3/frontend
+        run: |
+          npm install
+          npm run build -- --base=/fullstack/ex3/
+
+      - name: Build EX5
+        working-directory: ex5/client
+        run: |
+          npm install
+          npm run build -- --base=/fullstack/ex5/
+
+      - name: Prepare website
+        run: |
+          mkdir -p _site/ex3 _site/ex4 _site/ex5
+          cp -R ex3/frontend/dist/. _site/ex3/
+          cp -R ex4/public/. _site/ex4/
+          cp -R ex5/client/dist/. _site/ex5/
+          printf '<h1>Full Stack Web Development Lab</h1><p><a href="./ex3/">EX3 - Leave Management</a></p><p><a href="./ex4/">EX4 - Project Management</a></p><p><a href="./ex5/">EX5 - Online Survey</a></p>' > _site/index.html
+          touch _site/.nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
