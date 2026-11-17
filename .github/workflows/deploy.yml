@@ -23,6 +23,8 @@ jobs:
 
       - name: Build EX3
         working-directory: ex3/frontend
+        env:
+          VITE_API_URL: https://leave-management-api-hvmk.onrender.com/api
         run: |
           npm install
           npm run build -- --base=/fullstack/ex3/
