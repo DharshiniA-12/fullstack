@@ -1,10 +1,10 @@
-Exercise 1a: https://dharshinia-12.github.io/fullstack/ex1a/ex1a.html?utm_source=chatgpt.com
+Exercise 1a: https://dharshinia-12.github.io/ex1a-portfolio/
 
-EX1B – Twitter: https://dharshinia-12.github.io/fullstack/ex1b/
+EX1B – Twitter: https://dharshinia-12.github.io/ex1b-twitter/
 
-EX2A – Food Delivery: https://dharshinia-12.github.io/fullstack/food-delivery/
+EX2A – Food Delivery: https://dharshinia-12.github.io/ex2a-food-delivery/
 
-EX2B – Sell and Buy: https://dharshinia-12.github.io/fullstack/sell-buy/
+EX2B – Sell and Buy: https://dharshinia-12.github.io/ex2b-sell-buy/
 
 Exercise 3: https://leave-management-frontend-c4hf.onrender.com?utm_source=chatgpt.com
 
