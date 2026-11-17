@@ -10,12 +10,35 @@ const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/leave_management';
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const CORS_ORIGINS = process.env.CORS_ORIGINS || 'https://dharshinia-12.github.io';
+
+function parseOrigins(value) {
+  return value.split(',').map(item => item.trim()).filter(Boolean).map(item => {
+    let url;
+    try {
+      url = new URL(item);
+    } catch {
+      throw new Error(`Invalid CORS origin "${item}". Use a full HTTP or HTTPS origin.`);
+    }
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      throw new Error(`Invalid CORS origin "${item}". Use a full HTTP or HTTPS origin.`);
+    }
+    return url.origin;
+  });
+}
+
+const allowedOrigins = new Set([
+  ...parseOrigins(CLIENT_URL),
+  ...parseOrigins(CORS_ORIGINS)
+]);
 
 app.use(cors({
   origin(origin, callback) {
     const isLocalDev = !origin || /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
-    if (isLocalDev || origin === CLIENT_URL) return callback(null, true);
-    return callback(new Error('Origin is not allowed by CORS. Check CLIENT_URL in backend/.env.'));
+    if (isLocalDev || allowedOrigins.has(origin)) return callback(null, true);
+    const error = new Error('Origin is not allowed by CORS. Check CLIENT_URL and CORS_ORIGINS.');
+    error.code = 'CORS_ORIGIN_DENIED';
+    return callback(error);
   }
 }));
 app.use(express.json({ limit: '1mb' }));
@@ -34,6 +57,7 @@ app.use('/api/leaves', leaveRoutes);
 app.use((req, res) => res.status(404).json({ message: `Route not found: ${req.method} ${req.path}` }));
 app.use((error, _req, res, _next) => {
   console.error(error);
+  if (error?.code === 'CORS_ORIGIN_DENIED') return res.status(403).json({ message: error.message });
   if (error?.code === 11000) return res.status(409).json({ message: 'Email or roll number is already registered.' });
   if (error?.name === 'ValidationError' || error?.name === 'CastError') return res.status(400).json({ message: error.message });
   return res.status(500).json({ message: 'Server error. Check the backend terminal.' });

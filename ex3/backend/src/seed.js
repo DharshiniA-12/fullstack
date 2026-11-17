@@ -24,8 +24,13 @@ async function ensureAccount({ username, email, rollNumber, password, role, casu
     if (user.role !== role) {
       throw new Error(`The existing account ${email} has role "${user.role}". Resolve the email conflict before seeding the ${role} account.`);
     }
+    if (!(await bcrypt.compare(password, user.passwordHash))) {
+      user.passwordHash = await bcrypt.hash(password, 10);
+      changed = true;
+      console.log(`Updated the password for the ${role} demo account: ${email}`);
+    }
     if (changed) await user.save();
-    console.log(`${role} demo account already exists; existing data was preserved: ${email}`);
+    else console.log(`${role} demo account already exists; existing data was preserved: ${email}`);
   }
   return user;
 }
@@ -41,8 +46,6 @@ async function seed() {
       username: 'Leave Manager', email: 'manager@leaveease.com', rollNumber: 'MANAGER-001',
       password: 'manager12345', role: 'manager', casualLeaveBalance: 0, medicalLeaveBalance: 0
     });
-    console.log('Employee login: kamali@demo.com / demo12345');
-    console.log('Manager login: manager@leaveease.com / manager12345');
     console.log(`Database ready: ${mongoose.connection.name}`);
   } catch (error) {
     console.error('Could not seed the database. Start MongoDB and check backend/.env.');

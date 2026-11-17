@@ -22,7 +22,7 @@ async function api(path, { token, ...options } = {}) {
       }
     });
   } catch {
-    throw new Error(`Cannot reach the backend at ${API_BASE}. Start the backend and check the MongoDB service.`);
+    throw new Error(`Cannot reach the backend at ${API_BASE}. Check that it is online and allows this site in its CORS configuration.`);
   }
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(data.message || 'Something went wrong. Please try again.');

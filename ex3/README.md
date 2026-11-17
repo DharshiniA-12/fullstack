@@ -119,7 +119,7 @@ The seed command creates these accounts if they do not already exist. Existing a
 
 Choose the matching tab on the login screen. The employee account cannot use the manager endpoint, and the manager account cannot use the employee login endpoint.
 
-These fixed credentials are for local lab demonstration only. Change them before deploying the application anywhere shared or public. Change the `JWT_SECRET` in `backend/.env` from the example value before using the project beyond local testing.
+The demo credentials are intentionally available to anyone using the public demo. The seed command preserves the account's leave data and ensures the displayed demo password is current. Do not use the demo accounts for real employee data. Change the `JWT_SECRET` in `backend/.env` from the example value before deploying.
 
 ### 5. Test the approval workflow
 
@@ -134,6 +134,31 @@ These fixed credentials are for local lab demonstration only. Change them before
 9. On approval, the leave balance is deducted. On rejection, no balance is deducted. Cancelling a pending request releases its reserved days; withdrawing an approved request restores the deducted days.
 
 Health check: open `http://localhost:5000/api/health`. It should return JSON showing `"status":"ok"` and `"database":"connected"`.
+
+## Deploy to Render and GitHub Pages
+
+The GitHub Actions workflow builds the frontend with the Render API URL and publishes it at `https://dharshinia-12.github.io/fullstack/ex3/`.
+
+### Render backend
+
+1. In Render, create or open the Web Service for this repository. Set **Root Directory** to `ex3/backend`, **Build Command** to `npm install`, and **Start Command** to `npm start`.
+2. In the service's **Environment** settings, set:
+   - `MONGO_URI` to the MongoDB Atlas connection string for the Leave Management database.
+   - `JWT_SECRET` to a long, random secret kept only in Render.
+   - `CLIENT_URL` to `https://dharshinia-12.github.io` (the site origin, without `/fullstack/ex3/`).
+   - `CORS_ORIGINS` to `https://dharshinia-12.github.io`. Add any other required frontend origins as a comma-separated list.
+3. Save the settings and deploy. `npm start` first runs the idempotent seed: it creates the demo employee and manager when missing, and repairs only their demo passwords if needed. It does not duplicate accounts or reset leave balances. A conflicting role at a demo email stops startup with an explicit error.
+4. Confirm `https://leave-management-api-hvmk.onrender.com/api/health` reports `"status":"ok"` and `"database":"connected"`.
+
+Keep the MongoDB URI and JWT secret in Render environment settings; never put them in the frontend or GitHub Pages build variables.
+
+### GitHub Pages frontend
+
+1. In the repository's **Settings → Pages**, select **GitHub Actions** as the build and deployment source.
+2. Push the changes to the `main` branch or run the **Deploy All Frontends** workflow manually from **Actions**.
+3. Confirm the workflow succeeds, then open `https://dharshinia-12.github.io/fullstack/ex3/` and use **Continue with demo employee**.
+
+The frontend build sets `VITE_API_URL` to `https://leave-management-api-hvmk.onrender.com/api`; the Render CORS origins above must include the GitHub Pages origin for browser requests to succeed.
 
 ## Leave rules
 
