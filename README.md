@@ -10,5 +10,5 @@ Exercise 3: https://leave-management-frontend-c4hf.onrender.com?utm_source=chatg
 
 Exercise 4: https://ex4-task-manager.onrender.com
 
-Exercise 5: https://ex5-online-survey-frontend.onrender.com/
+Exercise 5: https://dharshinia-12.github.io/fullstack/ex5/
  
